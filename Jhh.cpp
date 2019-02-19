@@ -5,10 +5,7 @@
    T = 0K
    Hole (h) doped graphene to hole (h) doped graphene.
    Calculates Jhh(w) according to notes 11/feb/2019.
-   I1(kp,w) is tabulated in the folder ../2_EF.../IntPhiW 
-   Tabulated frequencies are in w3.dat
-      0.001 < w(eV) < 2.192            nw=500
-      1e-5 < kp(1/nm) < 83             nk=510  (not eq. spaced)
+   I1(kp,w) is tabulated
    Combinations of Ef are: 
       Ef2=0.3eV    Ef1=0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0eV
       Ef2=0.5eV    Ef1=1.0eV
@@ -34,8 +31,9 @@ int main(int argc, char **argv)
 	FILE *fout=fopen(nout,"w");
 	   	
   // --- Tabulated frequencies     
-	//sprintf(ninw,"../w2.dat");
-  sprintf(ninw,"../2_EFdep_gr-hBN-gr_no-rotat/IntPhiW/w3.dat");
+	//sprintf(ninw,"./IntPhiWo/w2.dat"); // sonic
+  sprintf(ninw,"../w2.dat");
+  //sprintf(ninw,"../2_EFdep_gr-hBN-gr_no-rotat/IntPhiW/w3.dat");
 	int     nw = norow(ninw);
 	FILE *finw = fopen(ninw,"r");
 	double *ww = new double[nw];
@@ -53,8 +51,9 @@ int main(int argc, char **argv)
     g0 = (-Ef1+Ef2-Vb+w)/vf; 
     eta0 = (-Ef1+Ef2-Vb)/vf;
 
-    //sprintf(nin,"../IntPhiWo/IntW_Ef1-%g_Ef2-%g_d1_w%g.dat",Ef1*eV,Ef2*eV,ww[l]);
-    sprintf(nin,"../2_EFdep_gr-hBN-gr_no-rotat/IntPhiW/IntW_Ef1-%g_Ef2-%g_d1_w%g.dat",Ef1*eV,Ef2*eV,ww[l]);
+    //sprintf(nin,"./IntPhiWo/IntW_Ef1-%g_Ef2-%g_d1_w%g.dat",Ef1*eV,Ef2*eV,ww[l]); // sonic
+    sprintf(nin,"../IntPhiWo/IntW_Ef1-%g_Ef2-%g_d1_w%g.dat",Ef1*eV,Ef2*eV,ww[l]);
+    //sprintf(nin,"../2_EFdep_gr-hBN-gr_no-rotat/IntPhiW/IntW_Ef1-%g_Ef2-%g_d1_w%g.dat",Ef1*eV,Ef2*eV,ww[l]);
 			FILE   *fin = fopen(nin,"r");
 			double  *kpf = new double[nk]; // kp from file
 			double  *I1f = new double[nk]; // I1 from file
