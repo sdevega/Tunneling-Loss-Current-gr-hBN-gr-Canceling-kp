@@ -50,7 +50,7 @@ double Icv_kp(double kp_,double itpI1){ // Integrand for  Int d_kp
 double Icc_vph(double vph){ // Integrand for  Int d_vph
    Qi01 = Qi001(kp,vph,g0);
    Qf01 = Qf001(kp,vph,g0);
-	A1   = A03(kp,vph,g0); 
+	A1   = A01(kp,vph,g0); 
 	En1  = Ef1 - vf*Qi01;
    En2  = vf*Qf01 - Ef2;
 		
@@ -65,7 +65,7 @@ double Icc_kp(double kp_,double itpI1){ // Integrand for  Int d_kp
 
       sum = 0.0;
       for(j=0;j<(nev-1);j++){
-         sum += 0.5*(Icv_vph(phi[j+1])+Icv_vph(phi[j]))*(phi[j+1]-phi[j]);
+         sum += 0.5*(Icc_vph(phi[j+1])+Icc_vph(phi[j]))*(phi[j+1]-phi[j]);
       }
       
       return kp*itpI1*sum;
