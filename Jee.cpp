@@ -43,7 +43,7 @@ int main(int argc, char **argv)
   for(l=0;l<nev;l++) phi[l]=var1+l*(var2-var1)/(nev-1.0);
   double  *kpt = new double[nk]; 
 	double  *I1t = new double[nk]; 
-  double Icv_tot,Icc_tot;
+  double Ivc_tot,Icc_tot;
   
 	for(l=0;l<nw;l++){
 //    l = 50;
@@ -69,16 +69,16 @@ int main(int argc, char **argv)
       delete [] kpf; kpf = NULL;
       delete [] I1f; I1f = NULL;
     
-    Icv_tot=Icc_tot=0.0;
+    Ivc_tot=Icc_tot=0.0;
     for(i=0;i<(nk-1);i++){
-      Icv_tot+=0.5*(Icv_kp(kpt[i+1],I1t[i+1])+Icv_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
+      Icv_tot+=0.5*(Ivc_kp(kpt[i+1],I1t[i+1])+Ivc_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
       Icc_tot+=0.5*(Icc_kp(kpt[i+1],I1t[i+1])+Icc_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
     }
 
-    Jw_cv = Icv_tot/pi/pi/pi/vf;  
+    Jw_vc = Icv_tot/pi/pi/pi/vf;  
     Jw_cc = Icc_tot/pi/pi/pi/vf;  
-    Jw = Jw_cv+Jw_cc;
-	  fprintf(fout,"%g %g ",w*eV,Jw_cv*nm*nm);
+    Jw = Jw_vc+Jw_cc;
+	  fprintf(fout,"%g %g ",w*eV,Jw_vc*nm*nm);
     fprintf(fout,"%g %g \n",Jw_cc*nm*nm,Jw*nm*nm);		
     fflush(fout);
     printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw*nm*nm);
