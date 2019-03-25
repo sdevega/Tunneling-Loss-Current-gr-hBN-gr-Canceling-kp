@@ -40,7 +40,6 @@ int main(int argc, char **argv)
 	for(i=0;i<nw;++i) fscanf(finw,"%lf",ww+i);
 	fclose(finw);   
 
-  for(l=0;l<nev;l++) phi[l]=var1+l*(var2-var1)/(nev-1.0);
   double  *kpt = new double[nk]; 
 	double  *I1t = new double[nk]; 
   double Ivc_tot,Ivv_tot;
@@ -79,12 +78,11 @@ int main(int argc, char **argv)
 	  fprintf(fout,"%g %g ",w*eV,Jw_vc*nm*nm);
     fprintf(fout,"%g %g \n",Jw_vv*nm*nm,Jw*nm*nm);		
     fflush(fout);
-    printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw*nm*nm);
+    //printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw*nm*nm);
 	} 
 	delete [] ww;  ww  = NULL;
   delete [] kpt; kpt = NULL;
   delete [] I1t; I1t = NULL;
-  delete [] phi; phi = NULL;
   
   fclose(fout);
 

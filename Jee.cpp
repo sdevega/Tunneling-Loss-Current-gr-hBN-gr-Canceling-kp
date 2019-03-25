@@ -4,7 +4,7 @@
    Full-RPA for the conductivity.
    T = 0K
    Electron (e) doped graphene to electron (e) doped graphene.
-   Calculates Jeh(w) according to notes 11/feb/2019.
+   Calculates Jee(w) according to notes 11/feb/2019.
    I1(kp,w) is tabulated 
    Combinations of Ef are: 
       Ef2=0.3eV    Ef1=0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0eV
@@ -40,15 +40,14 @@ int main(int argc, char **argv)
 	for(i=0;i<nw;++i) fscanf(finw,"%lf",ww+i);
 	fclose(finw);   
 
-  for(l=0;l<nev;l++) phi[l]=var1+l*(var2-var1)/(nev-1.0);
   double  *kpt = new double[nk]; 
 	double  *I1t = new double[nk]; 
   double Ivc_tot,Icc_tot;
   
 	for(l=0;l<nw;l++){
 //    l = 50;
-		w  = ww[l]/eV;
-    g0 = (Ef1-Ef2-Vb+w)/vf; 
+		w    = ww[l]/eV;
+    g0   = (Ef1-Ef2-Vb+w)/vf; 
     eta0 = (Ef1-Ef2-Vb)/vf;
     //g0 = (-Vb+w)/vf;
     //eta0 = -Vb/vf;
@@ -71,24 +70,23 @@ int main(int argc, char **argv)
     
     Ivc_tot=Icc_tot=0.0;
     for(i=0;i<(nk-1);i++){
-      Icv_tot+=0.5*(Ivc_kp(kpt[i+1],I1t[i+1])+Ivc_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
+      Ivc_tot+=0.5*(Ivc_kp(kpt[i+1],I1t[i+1])+Ivc_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
       Icc_tot+=0.5*(Icc_kp(kpt[i+1],I1t[i+1])+Icc_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
     }
 
-    Jw_vc = Icv_tot/pi/pi/pi/vf;  
+    Jw_vc = Ivc_tot/pi/pi/pi/vf;  
     Jw_cc = Icc_tot/pi/pi/pi/vf;  
     Jw = Jw_vc+Jw_cc;
 	  fprintf(fout,"%g %g ",w*eV,Jw_vc*nm*nm);
     fprintf(fout,"%g %g \n",Jw_cc*nm*nm,Jw*nm*nm);		
     fflush(fout);
-    printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw*nm*nm);
+    //printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw*nm*nm);
     
 	} 
 	delete [] ww;  ww  = NULL;
   delete [] kpt; kpt = NULL;
   delete [] I1t; I1t = NULL;
-  delete [] phi; phi = NULL;
-
+  
   fclose(fout);
 
   return 0;

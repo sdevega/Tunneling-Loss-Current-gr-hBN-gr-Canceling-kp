@@ -27,7 +27,7 @@
 // --- Integral 1: val-cond
 double Ivc_vph(double vph){ // Integrand for  Int d_vph
    Qi02 = Qi002(kp,vph,g0);
-	A2   = A02(kp,vph,g0); 
+	A2   = B02(kp,vph,g0); 
    En1  = vf*Qi02 - Ef1;
 
    // allowed energy region
@@ -39,12 +39,7 @@ double Ivc_vph(double vph){ // Integrand for  Int d_vph
 double Ivc_kp(double kp_,double itpI1){ // Integrand for  Int d_kp
    kp = kp_;
    
-   sum = 0.0;
-   for(j=0;j<(nev-1);j++){
-      sum += 0.5*(Ivc_vph(phi[j+1])+Ivc_vph(phi[j]))*(phi[j+1]-phi[j]);
-   }
-   
-	return kp*itpI1*sum;
+	return kp*itpI1*apt.integrate(Ivc_vph,var1,var2);
 }
 
 
@@ -65,13 +60,5 @@ double Ivv_kp(double kp_,double itpI1){ // Integrand for  Int d_kp
    
    if     (w<vf*(-kp-eta0)) return 0.0;
    else if(w>vf*( kp-eta0)) return 0.0;
-   else{
-      
-      sum = 0.0;
-      for(j=0;j<(nev-1);j++){
-         sum += 0.5*(Ivv_vph(phi[j+1])+Ivv_vph(phi[j]))*(phi[j+1]-phi[j]);
-      }
-      
-      return kp*itpI1*sum;
-   }
+   else  return kp*itpI1*apt.integrate(Ivv_vph,var1,var2);
 }

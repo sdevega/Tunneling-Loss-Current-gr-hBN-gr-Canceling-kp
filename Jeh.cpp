@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	//--- Output for the spectral tunnelling probability
   sprintf(nout,"Jeh_Ef1-%g_Ef2-%g_d1_Vb%g.dat",Ef1*eV,Ef2*eV,Vb*eV);  
 	FILE *fout=fopen(nout,"w");
-	   	
+
   // --- Tabulated frequencies     
 	//sprintf(ninw,"./IntPhiWo/w2.dat"); // sonic
   sprintf(ninw,"../w2.dat");
@@ -39,8 +39,7 @@ int main(int argc, char **argv)
 	double *ww = new double[nw];
 	for(i=0;i<nw;++i) fscanf(finw,"%lf",ww+i);
 	fclose(finw);   
-
-  for(l=0;l<nev;l++) phi[l]=var1+l*(var2-var1)/(nev-1.0);
+  
   double  *kpt = new double[nk]; 
 	double  *I1t = new double[nk]; 
   double Icv_tot,Ivc_tot,Icc_tot,Ivv_tot;
@@ -59,7 +58,7 @@ int main(int argc, char **argv)
 			double  *I1f = new double[nk]; // I1 from file
 			for(i=0;i<nk;++i) fscanf(fin,"%lf %lf",kpf+i,I1f+i);
 			fclose(fin);
-
+      
 			for(i=0;i<nk;i++){
         kpt[i]=kpf[i]/nm;		
         I1t[i]=-I1f[i];		
@@ -74,6 +73,8 @@ int main(int argc, char **argv)
       Icc_tot+=0.5*(Icc_kp(kpt[i+1],I1t[i+1])+Icc_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
       Ivv_tot+=0.5*(Ivv_kp(kpt[i+1],I1t[i+1])+Ivv_kp(kpt[i],I1t[i]))*(kpt[i+1]-kpt[i]);		
     }
+    
+      	
 
     Jw_cv = Icv_tot/pi/pi/pi/vf;  
     Jw_vc = Ivc_tot/pi/pi/pi/vf;  
@@ -88,7 +89,6 @@ int main(int argc, char **argv)
 	delete [] ww;  ww  = NULL;
   delete [] kpt; kpt = NULL;
   delete [] I1t; I1t = NULL;
-  delete [] phi; phi = NULL;
 
   fclose(fout);
 

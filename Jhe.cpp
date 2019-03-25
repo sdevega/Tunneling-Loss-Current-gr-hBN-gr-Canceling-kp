@@ -41,15 +41,14 @@ int main(int argc, char **argv)
 	for(i=0;i<nw;++i) fscanf(finw,"%lf",ww+i);
 	fclose(finw);   
 
-  for(l=0;l<nev;l++) phi[l]=var1+l*(var2-var1)/(nev-1.0);
   double  *kpt = new double[nk]; 
 	double  *I1t = new double[nk]; 
   double Ivc_tot;
   
 	for(l=0;l<nw;l++){
 //    l = 50;
-		w  = ww[l]/eV;
-    g0 = (-Ef1-Ef2-Vb+w)/vf; 
+		w    = ww[l]/eV;
+    g0   = (-Ef1-Ef2-Vb+w)/vf; 
     eta0 = (-Ef1-Ef2-Vb)/vf;
 
     //sprintf(nin,"./IntPhiWo/IntW_Ef1-%g_Ef2-%g_d1_w%g.dat",Ef1*eV,Ef2*eV,ww[l]); // sonic
@@ -76,12 +75,12 @@ int main(int argc, char **argv)
     Jw_vc = Ivc_tot/pi/pi/pi/vf;  
 	  fprintf(fout,"%g %g \n",w*eV,Jw_vc*nm*nm);
     fflush(fout);
-    printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw_vc*nm*nm);
+    //printf("-->  w(eV)=%g   J=%g\n",ww[l],Jw_vc*nm*nm);
 	} 
 	delete [] ww;  ww  = NULL;
   delete [] kpt; kpt = NULL;
   delete [] I1t; I1t = NULL;
-  delete [] phi; phi = NULL;
+
   fclose(fout);
 
   return 0;

@@ -2,6 +2,7 @@
    *** HEADER FOR J's.cpp ***
 	Spectrally resolved tunnelling probability for a 
    perfectly stacked gr-hBN-gr device.
+   ELIMINATING Qi!! Final integral over kp
    Full-RPA for the conductivity.
    T = 0K
    Different doping combinations for the graphene sheets.
@@ -18,8 +19,7 @@
 # pragma once
 
 #include "sve/sve.h"
-#include "sve/qtraps.h"
-//#include "sve/interp_linear.h"
+#include "sve/adapt.h"
 
 // w2.dat and IntPhiWo
 int    nk = 1100;
@@ -37,11 +37,12 @@ double Qf01,Qf02,Qf03,Qf04;
 double A1,A2,A3,A4;
 double eta0;
 
-int j,nev=60;
+int j;
 double sum;
 double var1 = 0.001;
 double var2 = 0.999*pi;
-double *phi=new double[nev];
+
+Adapt apt(10);
 
 // --- Fermi-Dirac distribution at T=0K (Step function)
 double FD(double En){
@@ -121,6 +122,39 @@ double A04(double kp,double vph,double g0){
    else return num/den;
 }
 
+// --- B = [1-Qbi*Qbf/Qi/Qf]/|F'(Qi0)| 
+// ---     delta(F(Qi))=delta(Qi-Qi0)/|F'(Qi0)|
+double B01(double kp,double vph,double g0){ 
+	double res = -g0 + kp*cos(vph);
+   
+   if(res<0)       return -1.0; 
+   else if(res>0)  return  1.0; 
+   else            return  0.0;
+}
+
+double B02(double kp,double vph,double g0){ 
+	double Qi02 = Qi002(kp,vph,g0);
+   double num = - 2.0*Qi02 - g0 + kp*cos(vph);
+   double den = fabs(g0 + kp*cos(vph));
+  	if(den==0) return 0.0;
+   else return num/den;
+}
+
+double B03(double kp,double vph,double g0){ 
+   double Qi03 = Qi003(kp,vph,g0);
+   double num = - 2.0*Qi03 + g0 + kp*cos(vph);
+   double den = fabs(g0 - kp*cos(vph));
+   if(den==0) return 0.0;
+   else return num/den;
+}
+
+double B04(double kp,double vph,double g0){ 
+	double res = g0 + kp*cos(vph);
+   
+   if(res<0)       return -1.0; 
+   else if(res>0)  return  1.0; 
+   else            return  0.0;  
+}
 
 
 // --- Qf0: Qf's evaluated at Qi0
